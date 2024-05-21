@@ -2,7 +2,7 @@
 import express, { Express, Request, Response } from "express";
 import {ApolloServer} from "@apollo/server";
 import {expressMiddleware} from "@apollo/server/express4";
-import {typeDefs, resolvers} from "./graphql";
+import {typeDefs, resolvers} from "./graphql.ts";
 import cors from 'cors';
 import dotenv from "dotenv";
 
