@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// see /docs/user.md
+model User {
+  id        Int         @id @default(autoincrement())
+  name      String?
+  email     String      @unique
+  password  String
+  address   String?
+  phone     String?
+  Role      Role[]
+  Feat      Feat[]
+  UserSkill UserSkill[]
+}
+
+// see /docs/skill.md
+model Skill {
+  id        Int         @id @default(autoincrement())
+  name      String      @unique
+  FeatSkill FeatSkill[]
+  UserSkill UserSkill[]
+}
+
+// see /docs/employer.md
+model Employer {
+  id      Int     @id @default(autoincrement())
+  name    String
+  address String?
+  phone   String?
+  website String?
+  Role    Role[]
+}
+
+// see /docs/role.md
+model Role {
+  id          Int       @id @default(autoincrement())
+  user        User      @relation(fields: [user_id], references: [id])
+  user_id     Int
+  employer    Employer  @relation(fields: [employer_id], references: [id])
+  employer_id Int
+  name        String
+  started_at  DateTime
+  stopped_at  DateTime?
+  Feat        Feat[]
+}
+
+// see /docs/feat.md
+model Feat {
+  id        Int         @id @default(autoincrement())
+  user      User        @relation(fields: [user_id], references: [id])
+  user_id   Int
+  role      Role        @relation(fields: [role_id], references: [id])
+  role_id   Int
+  FeatSkill FeatSkill[]
+}
+
+// see /docs/feat_skill.md
+model FeatSkill {
+  feat     Feat  @relation(fields: [feat_id], references: [id])
+  feat_id  Int
+  skill    Skill @relation(fields: [skill_id], references: [id])
+  skill_id Int
+
+  @@unique([feat_id, skill_id])
+}
+
+// see /docs/user_skill.md
+model UserSkill {
+  user     User  @relation(fields: [user_id], references: [id])
+  user_id  Int
+  skill    Skill @relation(fields: [skill_id], references: [id])
+  skill_id Int
+
+  @@unique([user_id, skill_id])
+}
