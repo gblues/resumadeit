@@ -7,12 +7,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// see /docs/user.md
+// see /docs/datamodel/user.md
 model User {
   id        Int         @id @default(autoincrement())
   name      String?
   email     String      @unique
-  password  String
   address   String?
   phone     String?
   Role      Role[]
@@ -20,7 +19,7 @@ model User {
   UserSkill UserSkill[]
 }
 
-// see /docs/skill.md
+// see /docs/datamodel/skill.md
 model Skill {
   id        Int         @id @default(autoincrement())
   name      String      @unique
@@ -28,7 +27,7 @@ model Skill {
   UserSkill UserSkill[]
 }
 
-// see /docs/employer.md
+// see /docs/datamodel/employer.md
 model Employer {
   id      Int     @id @default(autoincrement())
   name    String
@@ -38,7 +37,7 @@ model Employer {
   Role    Role[]
 }
 
-// see /docs/role.md
+// see /docs/datamodel/role.md
 model Role {
   id          Int       @id @default(autoincrement())
   user        User      @relation(fields: [user_id], references: [id])
@@ -51,7 +50,7 @@ model Role {
   Feat        Feat[]
 }
 
-// see /docs/feat.md
+// see /docs/datamodel/feat.md
 model Feat {
   id        Int         @id @default(autoincrement())
   user      User        @relation(fields: [user_id], references: [id])
@@ -61,7 +60,7 @@ model Feat {
   FeatSkill FeatSkill[]
 }
 
-// see /docs/feat_skill.md
+// see /docs/datamodel/feat_skill.md
 model FeatSkill {
   feat     Feat  @relation(fields: [feat_id], references: [id])
   feat_id  Int
@@ -71,7 +70,7 @@ model FeatSkill {
   @@unique([feat_id, skill_id])
 }
 
-// see /docs/user_skill.md
+// see /docs/datamodel/user_skill.md
 model UserSkill {
   user     User  @relation(fields: [user_id], references: [id])
   user_id  Int
